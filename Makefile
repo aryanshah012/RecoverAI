@@ -1,5 +1,8 @@
+dev:
+	./start.sh
+
 up:
-	docker compose up -d postgres redis
+	docker compose up -d
 
 backend:
 	cd backend && uvicorn app.main:app --reload
