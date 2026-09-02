@@ -1,0 +1,27 @@
+# env
+.env
+.env.local
+backend/.env
+frontend/.env.local
+
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+htmlcov/
+.coverage
+
+# node
+node_modules/
+.next/
+
+# generated data
+data/synthetic/simulation/*.csv
+ml/data/*.csv
+
+# misc
+*.db
+.DS_Store
+logs/

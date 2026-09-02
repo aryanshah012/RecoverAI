@@ -1,0 +1,1 @@
+export default function MetricCard({title,value,sub}:{title:string,value:string,sub?:string}){return <div className="card"><div className="text-sm muted">{title}</div><div className="text-3xl font-semibold mt-2">{value}</div>{sub&&<div className="text-xs muted mt-2">{sub}</div>}</div>}

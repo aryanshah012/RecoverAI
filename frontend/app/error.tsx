@@ -1,0 +1,1 @@
+"use client"; export default function Error({reset}:{reset:()=>void}){return <div className="card"><h1 className="text-2xl font-semibold">Something went wrong</h1><p className="muted mt-2">RecoverAI could not load this page.</p><button onClick={reset} className="border rounded px-4 py-2 mt-4">Try again</button></div>}

@@ -1,0 +1,37 @@
+{
+  "model_type": "GradientBoostingClassifier",
+  "dataset_size": 2318,
+  "test_split_size": 464,
+  "roc_auc": 0.6862,
+  "precision": 0.7176,
+  "recall": 0.6225,
+  "f1_score": 0.6667,
+  "brier_score_calibration": 0.2266,
+  "confusion_matrix": [
+    [
+      154,
+      61
+    ],
+    [
+      94,
+      155
+    ]
+  ],
+  "feature_importances": {
+    "amount": 0.2255,
+    "amount_log": 0.2137,
+    "attempt_number": 0.0198,
+    "is_high_value": 0.0,
+    "payment_method": 0.0353,
+    "failure_reason": 0.4678,
+    "customer_prior_success_rate": 0.0,
+    "customer_frequency": 0.038
+  },
+  "supported_actions": [
+    "delayed_retry",
+    "human_agent_escalation",
+    "send_payment_link",
+    "smart_dunning_sms",
+    "switch_payment_method"
+  ]
+}
