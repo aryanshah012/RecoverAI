@@ -2,10 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { rupees } from "@/lib/api";
-
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-const KEY = process.env.NEXT_PUBLIC_DEMO_API_KEY || "recoverai-demo-key";
+import { rupees, API, KEY } from "@/lib/api";
 
 export default function CustomersPage() {
   const [customers, setCustomers] = useState<any[]>([]);

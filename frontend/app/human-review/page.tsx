@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-const KEY = process.env.NEXT_PUBLIC_DEMO_API_KEY || "recoverai-demo-key";
+import { API, KEY } from "@/lib/api";
 
 export default function HumanReviewPage() {
   const [reviews, setReviews] = useState<any[]>([]);

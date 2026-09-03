@@ -2,9 +2,7 @@
 
 import { useEffect, useState, use } from "react";
 import Link from "next/link";
-import { rupees } from "@/lib/api";
-
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+import { rupees, API, KEY } from "@/lib/api";
 
 export default function MockPayPage({ params }: { params: Promise<{ reference: string }> }) {
   const { reference } = use(params);

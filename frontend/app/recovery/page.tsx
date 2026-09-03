@@ -2,14 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { rupees } from "@/lib/api";
+import { rupees, API, KEY } from "@/lib/api";
 import ExplainabilityModal from "@/components/ExplainabilityModal";
 import NotificationPreviewModal from "@/components/NotificationPreviewModal";
 import CaseTraceModal from "@/components/CaseTraceModal";
 import { StatusBadge } from "@/components/StatusBadge";
-
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-const KEY = process.env.NEXT_PUBLIC_DEMO_API_KEY || "recoverai-demo-key";
 
 export default function RecoveryCasesPage() {
   const [cases, setCases] = useState<any[]>([]);

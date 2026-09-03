@@ -1,10 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { rupees } from "@/lib/api";
-
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-const KEY = process.env.NEXT_PUBLIC_DEMO_API_KEY || "recoverai-demo-key";
+import { rupees, API, KEY } from "@/lib/api";
 
 const PERSONAS = [
   { id: "ecommerce", name: "E-Commerce Alpha", avg: "₹2,500", failureRate: "12%", desc: "High checkout volume with UPI/Card drops", seed: 42 },
