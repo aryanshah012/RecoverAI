@@ -55,7 +55,7 @@ export default function CopilotPage() {
           </p>
         </div>
         <span className="badge text-[11px] font-semibold bg-emerald-950/40 text-emerald-300 border-emerald-800">
-          🛡️ Read-Only Analytics Bounded
+          Read-only analytics
         </span>
       </div>
 
@@ -83,7 +83,7 @@ export default function CopilotPage() {
 
         {/* Suggested Queries */}
         <div className="mt-4">
-          <div className="text-[11px] text-zinc-500 mb-2">Verified Prompt Presets:</div>
+          <div className="text-[11px] text-zinc-500 mb-2">Suggested questions</div>
           <div className="flex flex-wrap gap-2">
             {SUGGESTED_QUERIES.map((sq) => (
               <button
@@ -94,7 +94,7 @@ export default function CopilotPage() {
                 }}
                 className="text-xs bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-zinc-300 px-3 py-1.5 rounded-lg transition"
               >
-                💬 {sq}
+                {sq}
               </button>
             ))}
           </div>

@@ -10,7 +10,7 @@ import {
 } from "recharts";
 import { rupees } from "@/lib/api";
 
-const COLORS = ["#f43f5e", "#8b5cf6", "#f59e0b", "#06b6d4", "#10b981", "#64748b"];
+const COLORS = ["#929e62", "#c69c62", "#b96f5d", "#aaa28f", "#68784a", "#d2c7aa"];
 
 interface ReasonItem {
   reason: string;

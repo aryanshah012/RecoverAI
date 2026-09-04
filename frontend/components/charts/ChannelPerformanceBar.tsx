@@ -49,7 +49,7 @@ export default function ChannelPerformanceBar({ data }: { data: MethodData[] }) 
     <div className="w-full h-64">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="#272a2f" vertical={false} />
           <XAxis dataKey="name" stroke="#71717a" fontSize={11} tickLine={false} />
           <YAxis
             stroke="#71717a"
@@ -58,7 +58,7 @@ export default function ChannelPerformanceBar({ data }: { data: MethodData[] }) 
             tickFormatter={(v) => `₹${v >= 1000 ? `${Math.round(v / 1000)}k` : v}`}
           />
           <Tooltip content={<CustomTooltip />} />
-          <Bar dataKey="volume" fill="#6366f1" radius={[6, 6, 0, 0]} />
+          <Bar dataKey="volume" fill="#929e62" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>
