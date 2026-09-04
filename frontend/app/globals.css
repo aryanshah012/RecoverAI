@@ -2,20 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: dark; --background:#15170f; --surface:#1d2016; --border:#383b2b; --muted:#aaa28f; --brand:#929e62; }
+:root { color-scheme: dark; --background:#111719; --surface:#182022; --border:#2c393b; --muted:#9ba8a8; --brand:#83a99b; }
 * { box-sizing: border-box; }
 html { background: var(--background); }
-body { min-height:100vh; margin:0; background:linear-gradient(180deg,#15170f 0%,#12140d 100%); color:#eee7d8; font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; -webkit-font-smoothing:antialiased; }
-::selection { background:rgba(146,158,98,.38); color:#fffdf7; }
-a,button { -webkit-tap-highlight-color:transparent; outline-color:rgba(163,173,114,.72); }
-.card { border:1px solid var(--border); background:#1d2016; border-radius:10px; padding:20px; box-shadow:0 1px 2px rgba(8,9,5,.28); }
+body { min-height:100vh; margin:0; background:linear-gradient(160deg,#111719 0%,#121a1d 46%,#101618 100%); color:#e7ecea; font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; -webkit-font-smoothing:antialiased; }
+::selection { background:rgba(131,169,155,.34); color:#f7faf8; }
+a,button { -webkit-tap-highlight-color:transparent; outline-color:rgba(131,169,155,.72); }
+.card { border:1px solid var(--border); background:rgba(24,32,34,.92); border-radius:12px; padding:20px; box-shadow:0 1px 2px rgba(4,8,9,.2); }
 .muted { color:var(--muted); }
 .badge { display:inline-flex; align-items:center; border:1px solid var(--border); border-radius:6px; padding:3px 8px; font-size:11px; }
 .gridcards { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; }
 table { width:100%; border-collapse:collapse; }
 th,td { text-align:left; border-bottom:1px solid var(--border); padding:13px 10px; }
-th { color:#99927f; font-size:11px; font-weight:600; letter-spacing:.03em; }
+th { color:#899696; font-size:11px; font-weight:600; letter-spacing:.03em; }
 tbody tr { transition:background-color .18s ease; }
-tbody tr:hover { background:rgba(224,216,190,.035); }
+tbody tr:hover { background:rgba(184,207,199,.035); }
 @media (max-width:1023px) { .gridcards { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media (max-width:640px) { .card { border-radius:14px; padding:16px; } .gridcards { grid-template-columns:1fr; } }

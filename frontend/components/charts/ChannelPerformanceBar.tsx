@@ -58,7 +58,7 @@ export default function ChannelPerformanceBar({ data }: { data: MethodData[] }) 
             tickFormatter={(v) => `₹${v >= 1000 ? `${Math.round(v / 1000)}k` : v}`}
           />
           <Tooltip content={<CustomTooltip />} />
-          <Bar dataKey="volume" fill="#929e62" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="volume" fill="#83a99b" radius={[5, 5, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

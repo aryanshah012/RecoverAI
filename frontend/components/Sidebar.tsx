@@ -19,9 +19,9 @@ function NavSections({ pathname, close }: { pathname: string; close?: () => void
       <div className="space-y-0.5">{section.items.map((item) => {
         const active = pathname === item.href || (item.href !== "/dashboard" && pathname.startsWith(item.href));
         const Icon = item.icon;
-        return <Link onClick={close} key={item.href} href={item.href} className={`group flex h-10 items-center gap-3 rounded-md px-3 text-[13px] font-medium transition-colors ${active ? "bg-[#2b2f1e] text-[#f0e8d7]" : "text-[#8f8a79] hover:bg-[#222519] hover:text-[#ddd5c4]"}`}>
+        return <Link onClick={close} key={item.href} href={item.href} className={`group flex h-10 items-center gap-3 rounded-lg px-3 text-[13px] font-medium transition-colors ${active ? "bg-[#25322f] text-[#e7ecea]" : "text-[#879493] hover:bg-[#1d2828] hover:text-[#d5ddda]"}`}>
           <Icon size={15} strokeWidth={active ? 2.2 : 1.8}/><span>{item.name}</span>
-          {active && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-[#a3ad72]"/>}
+          {active && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-[#8fb3a6]"/>}
         </Link>;
       })}</div>
     </div>
@@ -32,12 +32,12 @@ export default function Sidebar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   return <>
-    <header className="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between border-b border-[#383b2b] bg-[#181a12]/95 px-4 lg:hidden">
+    <header className="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between border-b border-[#2c393b] bg-[#141c1e]/95 px-4 lg:hidden">
       <Link href="/dashboard" className="flex items-center gap-2.5"><BrandMark/><span className="text-sm font-semibold tracking-tight">RecoverAI</span></Link>
-      <div className="flex items-center gap-2"><button onClick={() => setOpen(!open)} aria-label="Toggle navigation" aria-expanded={open} className="rounded-md border border-[#3f4230] p-2 text-[#aaa28f]">{open ? <X size={16}/> : <Menu size={16}/>}</button><span className="h-8 w-8 rounded-full bg-[#303421] text-center text-[10px] font-semibold leading-8 text-[#ded6c3]">RA</span></div>
+      <div className="flex items-center gap-2"><button onClick={() => setOpen(!open)} aria-label="Toggle navigation" aria-expanded={open} className="rounded-lg border border-[#344346] p-2 text-[#a5b0af]">{open ? <X size={16}/> : <Menu size={16}/>}</button><span className="h-8 w-8 rounded-full bg-[#273335] text-center text-[10px] font-semibold leading-8 text-[#d9e1de]">RA</span></div>
     </header>
-    {open && <div className="fixed inset-0 z-40 bg-black/70 pt-16 lg:hidden" onClick={() => setOpen(false)}><nav className="h-full w-[286px] overflow-y-auto border-r border-[#383b2b] bg-[#181a12] p-4" onClick={(event) => event.stopPropagation()}><NavSections pathname={pathname} close={() => setOpen(false)}/></nav></div>}
-    <aside className="fixed inset-y-0 left-0 z-40 hidden w-[248px] flex-col border-r border-[#383b2b] bg-[#181a12] lg:flex">
+    {open && <div className="fixed inset-0 z-40 bg-black/65 pt-16 lg:hidden" onClick={() => setOpen(false)}><nav className="h-full w-[286px] overflow-y-auto border-r border-[#2c393b] bg-[#141c1e] p-4" onClick={(event) => event.stopPropagation()}><NavSections pathname={pathname} close={() => setOpen(false)}/></nav></div>}
+    <aside className="fixed inset-y-0 left-0 z-40 hidden w-[248px] flex-col border-r border-[#2c393b] bg-[#141c1e] lg:flex">
       <div className="flex h-[76px] items-center px-5"><Link href="/dashboard" className="flex items-center gap-3"><BrandMark/><div><div className="text-[15px] font-semibold tracking-[-.02em] text-white">RecoverAI</div><div className="text-[11px] text-zinc-600">Revenue operations</div></div></Link></div>
       <nav className="flex-1 overflow-y-auto px-3 pb-4"><NavSections pathname={pathname}/></nav>
       <div className="px-3 pb-4">
@@ -49,5 +49,5 @@ export default function Sidebar() {
 }
 
 function BrandMark() {
-  return <div className="grid h-9 w-9 place-items-center rounded-lg bg-[#929e62] text-[#17190f]"><Zap size={17} fill="currentColor" strokeWidth={2.4}/></div>;
+  return <div className="grid h-9 w-9 place-items-center rounded-xl bg-[#83a99b] text-[#10201c]"><Zap size={17} fill="currentColor" strokeWidth={2.4}/></div>;
 }
