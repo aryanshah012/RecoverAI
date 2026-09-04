@@ -29,8 +29,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python backend dependencies
-COPY backend/requirements.txt ./backend/
-RUN pip install --no-cache-dir -r backend/requirements.txt
+COPY backend/requirements.lock ./backend/
+RUN pip install --no-cache-dir -r backend/requirements.lock
 
 # Copy backend, ML models, and data
 COPY backend/ ./backend/

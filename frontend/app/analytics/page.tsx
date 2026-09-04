@@ -3,6 +3,8 @@ import MetricCard from "@/components/MetricCard";
 import ChannelPerformanceBar from "@/components/charts/ChannelPerformanceBar";
 import FailureReasonDonut from "@/components/charts/FailureReasonDonut";
 
+export const dynamic = "force-dynamic";
+
 export default async function AnalyticsPage() {
   let d: any = { summary: {}, by_payment_method: [], strategy_performance: [], reasons: [] };
   let deg: any[] = [];

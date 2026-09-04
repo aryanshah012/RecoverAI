@@ -37,7 +37,7 @@ docker compose up -d postgres redis
 cd backend
 python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\\Scripts\\activate
-pip install -r requirements.txt
+pip install -r requirements.lock
 alembic upgrade head
 python scripts/seed_demo.py
 uvicorn app.main:app --reload

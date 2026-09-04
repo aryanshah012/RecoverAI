@@ -4,9 +4,13 @@ set -e
 # Port assigned by Render / Railway / Cloud host (defaults to 3000 if not set)
 PORT="${PORT:-3000}"
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+APP_DIR="${APP_DIR:-$SCRIPT_DIR}"
+
 echo "=========================================================="
 echo "⚡ Starting RecoverAI Unified Production Stack"
 echo "👉 Public Facing Port: $PORT"
+echo "👉 Application Directory: $APP_DIR"
 echo "=========================================================="
 
 cleanup() {
@@ -17,7 +21,11 @@ cleanup() {
 trap cleanup SIGINT SIGTERM
 
 # 1. Initialize SQLite demo database if not yet present
-cd /app/backend
+cd "$APP_DIR/backend"
+if [ -d ".venv" ]; then
+    source .venv/bin/activate
+fi
+
 if [ ! -f "recoverai.db" ]; then
     echo "Seeding initial demo database..."
     python scripts/seed_demo.py || true
@@ -41,6 +49,11 @@ done
 echo "✅ [Backend] Live & healthy on 127.0.0.1:8000"
 
 # 3. Start Next.js Frontend on the public facing $PORT
-cd /app/frontend
+cd "$APP_DIR/frontend"
+if [ ! -d ".next" ]; then
+    echo "📦 [.next build directory missing] Building Next.js frontend..."
+    npm run build
+fi
+
 echo "🚀 [Frontend] Launching Next.js UI on 0.0.0.0:$PORT..."
 exec npm start -- -p "$PORT" -H 0.0.0.0

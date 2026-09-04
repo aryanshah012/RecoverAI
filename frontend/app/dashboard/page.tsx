@@ -1,196 +1,21 @@
 import Link from "next/link";
-import { api, rupees } from "@/lib/api";
+import { api,rupees } from "@/lib/api";
 import MetricCard from "@/components/MetricCard";
 import RecoveryTrendChart from "@/components/charts/RecoveryTrendChart";
 import FailureReasonDonut from "@/components/charts/FailureReasonDonut";
+import { ArrowRight,Bell,CircleDollarSign,Clock3,Command,ExternalLink,Search,ShieldCheck,Sparkles,Zap } from "lucide-react";
 
-export default async function DashboardPage() {
-  let d: any = {};
-  let leakage: any = { summary: {}, by_payment_method: [], timeline: [], reasons: [] };
-  let opportunities: any[] = [];
-
-  try {
-    const results: any = await Promise.all([
-      api("/api/dashboard"),
-      api("/api/analytics/leakage").catch(() => ({ summary: {}, by_payment_method: [], timeline: [], reasons: [] })),
-      api("/api/opportunities").catch(() => []),
-    ]);
-    d = results[0] || {};
-    leakage = results[1] || leakage;
-    opportunities = results[2] || [];
-  } catch (err) {
-    console.error(err);
-  }
-
-  return (
-    <>
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-        <div>
-          <h1 className="text-3xl font-semibold">Revenue Recovery Intelligence</h1>
-          <p className="muted mt-1 text-sm">
-            Autonomous, bounded operating system for payment failures, abandoned checkouts, and failed subscriptions.
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <Link
-            href="/payments"
-            className="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow-md shadow-indigo-950 flex items-center gap-1.5"
-          >
-            ⚡ Review Payments
-          </Link>
-          <Link
-            href="/simulation"
-            className="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-semibold px-3.5 py-2.5 rounded-lg transition"
-          >
-            🧪 Simulation
-          </Link>
-        </div>
-      </div>
-
-      {/* Primary KPI Grid */}
-      <div className="gridcards mb-8">
-        <MetricCard
-          title="Revenue at Risk"
-          value={rupees(d.revenue_at_risk_paise || 0)}
-        />
-        <MetricCard
-          title="Recovered Revenue"
-          value={rupees(d.recovered_revenue_paise || 0)}
-        />
-        <MetricCard
-          title="Recovery Rate"
-          value={`${((d.recovery_rate || 0) * 100).toFixed(1)}%`}
-        />
-        <MetricCard
-          title="Active Recoveries"
-          value={`${d.active_recoveries || 0}`}
-        />
-      </div>
-
-      {/* Visual Analytics Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        <div className="card p-6 lg:col-span-2">
-          <div className="flex items-center justify-between mb-2">
-            <div>
-              <h2 className="font-semibold text-base text-white">Weekly Recovery Velocity</h2>
-              <p className="text-xs text-zinc-500">Failed volume vs. AI-recovered revenue trajectory</p>
-            </div>
-            <div className="flex items-center gap-4 text-xs">
-              <span className="flex items-center gap-1.5 text-red-400">
-                <span className="w-2.5 h-2.5 rounded-full bg-red-500 inline-block" /> Failed
-              </span>
-              <span className="flex items-center gap-1.5 text-emerald-400">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block" /> Recovered
-              </span>
-            </div>
-          </div>
-          <RecoveryTrendChart data={leakage.timeline || []} />
-        </div>
-
-        <div className="card p-6">
-          <div className="mb-2">
-            <h2 className="font-semibold text-base text-white">Failure Root Causes</h2>
-            <p className="text-xs text-zinc-500">Volume distribution by vector</p>
-          </div>
-          <FailureReasonDonut data={leakage.reasons || []} />
-        </div>
-      </div>
-
-      {/* Quick Action Navigation Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <Link
-          href="/opportunities"
-          className="card p-5 hover:border-zinc-600 transition group block bg-gradient-to-br from-zinc-950 to-zinc-900"
-        >
-          <div className="text-xl mb-2">🎯</div>
-          <div className="text-sm font-semibold text-white group-hover:text-indigo-400 transition">
-            Recovery Opportunities ({opportunities.length})
-          </div>
-          <p className="text-xs text-zinc-400 mt-1 leading-relaxed">
-            Knapsack budget-optimized prioritization across payments, checkouts, and recurring subscriptions.
-          </p>
-        </Link>
-
-        <Link
-          href="/copilot"
-          className="card p-5 hover:border-zinc-600 transition group block bg-gradient-to-br from-zinc-950 to-zinc-900"
-        >
-          <div className="text-xl mb-2">🤖</div>
-          <div className="text-sm font-semibold text-white group-hover:text-indigo-400 transition">
-            Merchant Copilot
-          </div>
-          <p className="text-xs text-zinc-400 mt-1 leading-relaxed">
-            Query failure diagnostics and channel performance grounded strictly in verified analytics.
-          </p>
-        </Link>
-
-        <Link
-          href="/human-review"
-          className="card p-5 hover:border-zinc-600 transition group block bg-gradient-to-br from-zinc-950 to-zinc-900"
-        >
-          <div className="text-xl mb-2">🛡️</div>
-          <div className="text-sm font-semibold text-white group-hover:text-indigo-400 transition">
-            Safety & Human Review
-          </div>
-          <p className="text-xs text-zinc-400 mt-1 leading-relaxed">
-            Deterministic policies governing high-value thresholds and retry limits.
-          </p>
-        </Link>
-      </div>
-
-      {/* Core Loop Architecture Diagram */}
-      <div className="card p-6 mb-8 border border-zinc-800 bg-zinc-950">
-        <div className="text-xs uppercase tracking-wider font-semibold text-zinc-400 mb-3">
-          Autonomous Revenue Recovery Pipeline
-        </div>
-        <div className="flex flex-wrap items-center gap-2 text-xs">
-          {[
-            { step: "Detect", desc: "Telemetry & webhook events" },
-            { step: "Predict", desc: "ML probability scoring" },
-            { step: "Diagnose", desc: "Root-cause classification" },
-            { step: "Decide", desc: "Bounded action selection" },
-            { step: "Safely Act", desc: "Deterministic policy checks" },
-            { step: "Monitor", desc: "Payment links & dunning" },
-            { step: "Recover", desc: "Signed webhook verification" },
-            { step: "Learn", desc: "Customer recovery memory" },
-          ].map((item, idx) => (
-            <div key={item.step} className="flex items-center gap-2">
-              <div className="bg-zinc-900 border border-zinc-800 px-3 py-2 rounded-lg">
-                <div className="font-semibold text-white">{item.step}</div>
-                <div className="text-[10px] text-zinc-500 mt-0.5">{item.desc}</div>
-              </div>
-              {idx < 7 && <span className="text-zinc-600 font-bold">→</span>}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Leakage by Payment Method Summary */}
-      {leakage.by_payment_method && leakage.by_payment_method.length > 0 && (
-        <div className="card p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-base text-white">Revenue Leakage by Payment Method</h2>
-            <Link href="/analytics" className="text-xs text-indigo-400 hover:underline">
-              Full Analytics →
-            </Link>
-          </div>
-          <div className="space-y-3">
-            {leakage.by_payment_method.map((item: any) => (
-              <div key={item.payment_method} className="flex items-center justify-between py-2 border-b border-zinc-800/80 text-xs">
-                <div className="flex items-center gap-2">
-                  <span className="badge uppercase text-[10px] bg-zinc-900 border-zinc-700 text-zinc-300">
-                    {item.payment_method}
-                  </span>
-                  <span className="text-zinc-400">{item.failed_count} failed transactions</span>
-                </div>
-                <div className="font-semibold font-mono text-zinc-200">
-                  {rupees(item.revenue_at_risk_paise)}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </>
-  );
+export default async function DashboardPage({searchParams}:{searchParams:Promise<{days?:string}>}){
+  const params=await searchParams;const days=[7,30,90].includes(Number(params.days))?Number(params.days):30;
+  let d:any={};let leakage:any={summary:{},by_payment_method:[],timeline:[],reasons:[]};let opportunities:any[]=[];
+  try{const results:any=await Promise.all([api(`/api/dashboard?days=${days}`),api(`/api/analytics/leakage?days=${days}`).catch(()=>leakage),api("/api/opportunities").catch(()=>[])]);d=results[0]||{};leakage=results[1]||leakage;opportunities=results[2]||[];}catch(err){console.error(err)}
+  const recoveryRate=(d.recovery_rate||0)*100;
+  return <>
+    <div className="mb-7 flex items-center justify-between border-b border-white/[.06] pb-5"><div className="flex items-center gap-2 text-[11px] text-zinc-600"><span>Overview</span><span>/</span><span className="text-zinc-400">Command center</span></div><div className="hidden items-center gap-2 sm:flex"><button className="flex h-8 items-center gap-2 rounded-lg border border-white/[.07] bg-white/[.025] px-3 text-[10px] text-zinc-500"><Search size={13}/> Search <kbd className="ml-5 rounded border border-white/10 px-1 text-[9px]">⌘K</kbd></button><button className="grid h-8 w-8 place-items-center rounded-lg border border-white/[.07] text-zinc-500"><Bell size={14}/></button></div></div>
+    <section className="mb-7 flex flex-col justify-between gap-5 md:flex-row md:items-end"><div><div className="mb-2 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.16em] text-emerald-400"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"/> Live intelligence</div><h1 className="text-3xl font-semibold tracking-[-.045em] text-zinc-100 sm:text-[36px]">Revenue command center</h1><p className="mt-2 max-w-xl text-[13px] leading-6 text-zinc-500">Detect, prioritize, and recover payment revenue with explainable automation and human control.</p></div><div className="flex items-center gap-2"><div className="flex h-9 items-center rounded-lg border border-white/[.08] bg-white/[.025] p-1">{[7,30,90].map(value=><Link key={value} href={`/dashboard?days=${value}`} className={`rounded-md px-2.5 py-1 text-[9px] font-medium ${days===value?"bg-white/[.08] text-zinc-200":"text-zinc-600"}`}>{value}d</Link>)}</div><Link href="/opportunities" className="flex h-9 items-center gap-2 rounded-lg bg-emerald-400 px-3.5 text-[11px] font-semibold text-emerald-950 transition hover:bg-emerald-300"><Sparkles size={14}/> Review opportunities</Link></div></section>
+    <div className="gridcards mb-6"><MetricCard title="Revenue at risk" value={rupees(d.revenue_at_risk_paise||0)} trend={`${(d.trends?.revenue_at_risk_pct||0)>=0?"+":""}${d.trends?.revenue_at_risk_pct||0}%`} sub="vs previous period" tone="warning"/><MetricCard title="Recovered revenue" value={rupees(d.recovered_revenue_paise||0)} trend={`${(d.trends?.recovered_revenue_pct||0)>=0?"+":""}${d.trends?.recovered_revenue_pct||0}%`} sub="vs previous period" tone="positive"/><MetricCard title="Recovery rate" value={`${recoveryRate.toFixed(1)}%`} trend={`${(d.trends?.recovery_rate_pct||0)>=0?"+":""}${d.trends?.recovery_rate_pct||0}%`} sub="vs previous period" tone="positive"/><MetricCard title="Active recoveries" value={`${d.active_recoveries||0}`} sub={`${opportunities.length} queued opportunities`} tone="neutral"/></div>
+    <div className="mb-6 grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1.65fr)_minmax(300px,.75fr)]"><div className="card overflow-hidden p-0"><div className="flex flex-col gap-3 border-b border-white/[.06] px-5 py-4 sm:flex-row sm:items-center sm:justify-between"><div><h2 className="text-[13px] font-semibold text-zinc-200">Recovery performance</h2><p className="mt-1 text-[10px] text-zinc-600">Failed volume compared with recovered revenue</p></div><div className="flex items-center gap-4 text-[10px] text-zinc-500"><span className="flex items-center gap-1.5"><i className="h-1.5 w-1.5 rounded-full bg-rose-400"/>Failed</span><span className="flex items-center gap-1.5"><i className="h-1.5 w-1.5 rounded-full bg-emerald-400"/>Recovered</span></div></div><div className="px-3 pb-2 pt-4 sm:px-5"><RecoveryTrendChart data={leakage.timeline||[]}/></div></div><div className="card overflow-hidden p-0"><div className="border-b border-white/[.06] px-5 py-4"><h2 className="text-[13px] font-semibold text-zinc-200">Failure signals</h2><p className="mt-1 text-[10px] text-zinc-600">Revenue exposure by root cause</p></div><div className="px-3 pb-2 pt-3"><FailureReasonDonut data={leakage.reasons||[]}/></div></div></div>
+    <div className="mb-6 grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(320px,.65fr)]"><div className="card overflow-hidden p-0"><div className="flex items-center justify-between border-b border-white/[.06] px-5 py-4"><div><h2 className="text-[13px] font-semibold text-zinc-200">Recovery pipeline</h2><p className="mt-1 text-[10px] text-zinc-600">Autonomous actions remain inside policy boundaries</p></div><span className="flex items-center gap-1.5 rounded-full border border-emerald-400/10 bg-emerald-400/[.05] px-2 py-1 text-[9px] text-emerald-400"><ShieldCheck size={11}/> All policies active</span></div><div className="grid grid-cols-2 gap-px bg-white/[.05] sm:grid-cols-4">{[{step:"Detect",desc:"Ingest failure signals",icon:Zap},{step:"Score",desc:"Predict recoverability",icon:Sparkles},{step:"Act",desc:"Run bounded actions",icon:Command},{step:"Recover",desc:"Verify payment",icon:CircleDollarSign}].map(({step,desc,icon:Icon},i)=><div key={step} className="group relative bg-[#101412] p-5"><div className="mb-7 flex items-center justify-between"><span className="grid h-8 w-8 place-items-center rounded-lg border border-white/[.07] bg-white/[.025] text-zinc-500 group-hover:text-emerald-400"><Icon size={15}/></span><span className="text-[9px] font-medium text-zinc-700">0{i+1}</span></div><div className="text-[11px] font-semibold text-zinc-300">{step}</div><div className="mt-1 text-[9px] text-zinc-600">{desc}</div>{i<3&&<ArrowRight size={12} className="absolute -right-1.5 top-1/2 z-10 hidden text-zinc-700 sm:block"/>}</div>)}</div></div><div className="card overflow-hidden p-0"><div className="flex items-center justify-between border-b border-white/[.06] px-5 py-4"><div><h2 className="text-[13px] font-semibold text-zinc-200">Priority queue</h2><p className="mt-1 text-[10px] text-zinc-600">Highest-value next actions</p></div><Link href="/opportunities" className="text-[10px] text-emerald-400">View all</Link></div><div className="divide-y divide-white/[.05]">{opportunities.slice(0,3).map((item:any,i)=><div key={item.id||i} className="flex items-center gap-3 px-5 py-3.5"><span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-amber-400/[.07] text-amber-400"><Zap size={13}/></span><div className="min-w-0 flex-1"><div className="truncate text-[10px] font-medium text-zinc-300">{item.customer_id||item.kind||`Recovery opportunity ${i+1}`}</div><div className="mt-1 flex items-center gap-1 text-[9px] text-zinc-600"><Clock3 size={9}/> Recommended action ready</div></div><span className="text-[10px] font-semibold text-zinc-300">{item.amount_paise?rupees(item.amount_paise):"Review"}</span></div>)}{opportunities.length===0&&<div className="px-5 py-10 text-center text-[10px] text-zinc-600">No opportunities awaiting review</div>}</div></div></div>
+    {leakage.by_payment_method?.length>0&&<div className="card overflow-hidden p-0"><div className="flex items-center justify-between border-b border-white/[.06] px-5 py-4"><div><h2 className="text-[13px] font-semibold text-zinc-200">Payment rail exposure</h2><p className="mt-1 text-[10px] text-zinc-600">Failed revenue grouped by payment method</p></div><Link href="/analytics" className="flex items-center gap-1 text-[10px] text-emerald-400">Open analytics <ExternalLink size={10}/></Link></div><div className="grid grid-cols-1 divide-y divide-white/[.05] md:grid-cols-2 md:divide-x md:divide-y-0">{leakage.by_payment_method.slice(0,4).map((item:any)=><div key={item.payment_method} className="flex items-center justify-between px-5 py-4"><div><span className="text-[10px] font-semibold uppercase tracking-[.08em] text-zinc-300">{item.payment_method}</span><span className="ml-2 text-[9px] text-zinc-600">{item.failed_count} failures</span></div><div className="text-[11px] font-semibold text-zinc-200">{rupees(item.revenue_at_risk_paise)}</div></div>)}</div></div>}
+  </>;
 }

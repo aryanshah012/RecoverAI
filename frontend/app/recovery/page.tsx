@@ -6,7 +6,8 @@ import { rupees, API, KEY } from "@/lib/api";
 import ExplainabilityModal from "@/components/ExplainabilityModal";
 import NotificationPreviewModal from "@/components/NotificationPreviewModal";
 import CaseTraceModal from "@/components/CaseTraceModal";
-import { StatusBadge } from "@/components/StatusBadge";
+import { OperationsHeader, StatTile, SegmentedFilter, LoadingState, EmptyState } from "@/components/OperationsUI";
+import { ExternalLink, FileText, MessageSquare, RefreshCw } from "lucide-react";
 
 export default function RecoveryCasesPage() {
   const [cases, setCases] = useState<any[]>([]);
@@ -51,80 +52,25 @@ export default function RecoveryCasesPage() {
 
   return (
     <>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-3xl font-semibold">Active Recovery Cases</h1>
-          <p className="muted mt-1 text-sm">
-            AI-diagnosed cases with bounded recovery actions, explainable attribution, and deterministic policies.
-          </p>
-        </div>
-        <button
-          onClick={fetchCases}
-          className="border border-zinc-700 bg-zinc-900 hover:bg-zinc-800 text-xs px-3 py-2 rounded-lg transition"
-        >
-          ↻ Refresh Cases
-        </button>
-      </div>
+      <OperationsHeader eyebrow="Case orchestration" title="Recovery cases" description="Track every diagnosis, policy decision, outreach action, and verified recovery from one operational queue." actions={<button onClick={fetchCases} className="flex h-9 items-center gap-2 rounded-lg border border-white/[.08] bg-white/[.025] px-3 text-[10px] font-medium text-zinc-400"><RefreshCw size={13}/> Refresh cases</button>} />
 
       {/* Top metrics */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div className="card">
-          <div className="muted text-xs uppercase font-medium">Total Cases</div>
-          <div className="text-2xl font-bold mt-1 text-white">{cases.length}</div>
-        </div>
-        <div className="card">
-          <div className="muted text-xs uppercase font-medium">Recovered Revenue</div>
-          <div className="text-2xl font-bold mt-1 text-emerald-400">{rupees(totalRecovered)}</div>
-        </div>
-        <div className="card">
-          <div className="muted text-xs uppercase font-medium">Remaining at Risk</div>
-          <div className="text-2xl font-bold mt-1 text-amber-400">{rupees(totalAtRisk)}</div>
-        </div>
-        <div className="card">
-          <div className="muted text-xs uppercase font-medium">Case Recovery Rate</div>
-          <div className="text-2xl font-bold mt-1 text-zinc-200">
-            {cases.length ? `${((recoveredCount / cases.length) * 100).toFixed(1)}%` : "0%"}
-          </div>
-        </div>
-      </div>
+      <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4"><StatTile label="Total cases" value={cases.length} detail="All recovery workflows"/><StatTile label="Recovered revenue" value={rupees(totalRecovered)} detail={`${recoveredCount} verified recoveries`} tone="positive"/><StatTile label="Remaining at risk" value={rupees(totalAtRisk)} detail="Open case value" tone="warning"/><StatTile label="Case recovery rate" value={cases.length ? `${((recoveredCount / cases.length) * 100).toFixed(1)}%` : "0%"} detail="Across all resolved cases"/></div>
 
       {/* Filters */}
-      <div className="flex gap-2 mb-4">
-        {[
+      <div className="mb-4 flex items-center justify-between"><SegmentedFilter value={filter} onChange={setFilter} items={[
           { id: "all", label: "All Cases" },
           { id: "approved", label: "Approved / Active" },
           { id: "recovered", label: "Recovered" },
           { id: "review", label: "Needs Human Review" },
           { id: "stopped", label: "Stopped by Policy" },
-        ].map((item) => (
-          <button
-            key={item.id}
-            onClick={() => setFilter(item.id)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition ${
-              filter === item.id
-                ? "bg-zinc-800 text-white border-zinc-600"
-                : "bg-zinc-950 text-zinc-400 border-zinc-800 hover:border-zinc-700"
-            }`}
-          >
-            {item.label}
-          </button>
-        ))}
-      </div>
+        ]}/><span className="hidden text-[9px] text-zinc-600 sm:block">{displayedCases.length} visible cases</span></div>
 
-      <div className="card overflow-x-auto">
+      <div className="card overflow-x-auto p-0">
         {loading ? (
-          <div className="py-8 text-center text-zinc-400 text-sm">Loading recovery cases...</div>
+          <LoadingState label="Loading recovery cases"/>
         ) : cases.length === 0 ? (
-          <div className="py-12 text-center text-zinc-500">
-            <p className="text-base font-medium">No recovery cases yet.</p>
-            <p className="text-xs mt-1">Go to Payments to run recovery on any failed payment!</p>
-            <Link
-              href="/payments"
-              className="inline-block mt-4 bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-4 py-2 rounded-lg"
-            >
-              Go to Payments →
-            </Link>
-          </div>
+          <EmptyState title="No recovery cases yet" detail="Move an eligible failed payment into recovery to create the first case." action={<Link href="/payments" className="rounded-lg bg-emerald-400 px-3 py-2 text-[10px] font-semibold text-emerald-950">Open payments</Link>}/>
         ) : (
           <table>
             <thead>
@@ -143,7 +89,7 @@ export default function RecoveryCasesPage() {
             <tbody>
               {displayedCases.map((r) => (
                 <tr key={r.id}>
-                  <td className="font-mono text-xs font-semibold text-white">#{r.id}</td>
+                  <td><Link href={`/recovery/${r.id}`} className="font-mono text-xs font-semibold text-emerald-400 hover:text-emerald-300">#{r.id}</Link></td>
                   <td className="text-xs">
                     <Link href={`/customers/${r.customer_id}`} className="text-emerald-400 hover:underline">
                       {r.customer_id}
@@ -153,11 +99,10 @@ export default function RecoveryCasesPage() {
                   <td>
                     <button
                       onClick={() => setExplainCase(r)}
-                      className="inline-flex items-center gap-1 font-mono text-xs text-indigo-300 hover:text-indigo-200 bg-indigo-950/40 hover:bg-indigo-950 border border-indigo-800/60 px-2 py-0.5 rounded transition"
+                      className="inline-flex items-center gap-1 rounded-lg border border-emerald-400/10 bg-emerald-400/[.05] px-2 py-1 font-mono text-[9px] font-semibold text-emerald-300"
                       title="Click to view explainable AI feature attribution"
                     >
                       <span>{((r.recovery_probability || 0) * 100).toFixed(0)}%</span>
-                      <span className="text-[10px]">ℹ️</span>
                     </button>
                   </td>
                   <td className="text-xs text-zinc-300">
@@ -198,18 +143,18 @@ export default function RecoveryCasesPage() {
                     <div className="flex items-center gap-1.5">
                       <button
                         onClick={() => setTraceCase(r)}
-                        className="text-[11px] bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-2 py-1 rounded transition flex items-center gap-1"
+                        className="flex items-center gap-1.5 rounded-lg border border-white/[.07] px-2 py-1 text-[9px] text-zinc-400 hover:text-zinc-200"
                         title="View 7-Point Safety Policy and Agent Execution Trace"
                       >
-                        📜 Trace
+                        <FileText size={10}/> Trace
                       </button>
 
                       <button
                         onClick={() => setPreviewCase(r)}
-                        className="text-[11px] bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-2 py-1 rounded transition flex items-center gap-1"
+                        className="flex items-center gap-1.5 rounded-lg border border-white/[.07] px-2 py-1 text-[9px] text-zinc-400 hover:text-zinc-200"
                         title="Preview WhatsApp and Email outreach message"
                       >
-                        💬 Preview
+                        <MessageSquare size={10}/> Preview
                       </button>
 
                       {r.status === "recovered" ? (
@@ -219,7 +164,7 @@ export default function RecoveryCasesPage() {
                           href="/human-review"
                           className="text-xs bg-amber-600 hover:bg-amber-500 text-black font-semibold px-2.5 py-1 rounded transition"
                         >
-                          Review ↗
+                          Review <ExternalLink size={10} className="inline"/>
                         </Link>
                       ) : r.external_url ? (
                         <a

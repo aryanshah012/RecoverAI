@@ -1,67 +1,23 @@
 "use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { Activity,BarChart3,Bot,ChevronDown,ClipboardCheck,CreditCard,FlaskConical,LayoutDashboard,Menu,ReceiptText,RefreshCcw,ShieldCheck,ShoppingBag,Sparkles,Users,X,Zap } from "lucide-react";
 
-const items = [
-  { name: "Dashboard", href: "/dashboard", icon: "📊" },
-  { name: "Payments", href: "/payments", icon: "💳" },
-  { name: "Recovery Cases", href: "/recovery", icon: "⚡" },
-  { name: "Opportunities", href: "/opportunities", icon: "🎯" },
-  { name: "Checkout", href: "/checkout", icon: "🛒" },
-  { name: "Subscriptions", href: "/subscriptions", icon: "🔄" },
-  { name: "Customers", href: "/customers", icon: "👥" },
-  { name: "Analytics", href: "/analytics", icon: "📈" },
-  { name: "Simulation Lab", href: "/simulation", icon: "🧪" },
-  { name: "Merchant Copilot", href: "/copilot", icon: "🤖" },
-  { name: "Human Review", href: "/human-review", icon: "🛡️" },
-  { name: "Audit Trail", href: "/audit", icon: "📜" },
+const sections=[
+  {label:"Overview",items:[{name:"Dashboard",href:"/dashboard",icon:LayoutDashboard},{name:"Opportunities",href:"/opportunities",icon:Sparkles}]},
+  {label:"Operations",items:[{name:"Payments",href:"/payments",icon:CreditCard},{name:"Recovery cases",href:"/recovery",icon:RefreshCcw},{name:"Checkout",href:"/checkout",icon:ShoppingBag},{name:"Subscriptions",href:"/subscriptions",icon:ReceiptText},{name:"Customers",href:"/customers",icon:Users}]},
+  {label:"Intelligence",items:[{name:"Analytics",href:"/analytics",icon:BarChart3},{name:"Simulation lab",href:"/simulation",icon:FlaskConical},{name:"Merchant copilot",href:"/copilot",icon:Bot}]},
+  {label:"Governance",items:[{name:"Human review",href:"/human-review",icon:ClipboardCheck},{name:"Audit trail",href:"/audit",icon:ShieldCheck}]},
 ];
 
-export default function Sidebar() {
-  const pathname = usePathname();
+export default function Sidebar(){const pathname=usePathname();const [open,setOpen]=useState(false);return <>
+  <header className="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between border-b border-white/[.07] bg-[#0b0e0c]/90 px-4 backdrop-blur-xl lg:hidden"><Link href="/dashboard" className="flex items-center gap-2.5"><BrandMark/><span className="text-sm font-semibold tracking-tight">RecoverAI</span></Link><div className="flex items-center gap-2"><button onClick={()=>setOpen(!open)} aria-label="Toggle navigation" aria-expanded={open} className="rounded-lg border border-white/10 p-2 text-zinc-400">{open?<X size={16}/>:<Menu size={16}/>}</button><span className="h-8 w-8 rounded-full border border-emerald-400/20 bg-emerald-400/10 text-center text-[10px] font-semibold leading-8 text-emerald-300">RA</span></div></header>
+  {open&&<div className="fixed inset-0 z-40 bg-black/60 pt-16 backdrop-blur-sm lg:hidden" onClick={()=>setOpen(false)}><nav className="h-full w-[286px] overflow-y-auto border-r border-white/[.07] bg-[#0b0e0c] p-4" onClick={e=>e.stopPropagation()}>{sections.map(section=><div key={section.label} className="mb-5"><div className="mb-2 px-3 text-[9px] font-semibold uppercase tracking-[.16em] text-zinc-600">{section.label}</div>{section.items.map(item=>{const Icon=item.icon;const active=pathname===item.href;return <Link onClick={()=>setOpen(false)} key={item.href} href={item.href} className={`mb-1 flex items-center gap-3 rounded-lg px-3 py-2.5 text-[12px] ${active?"bg-emerald-400/[.09] text-emerald-300":"text-zinc-500"}`}><Icon size={15}/>{item.name}</Link>})}</div>)}</nav></div>}
+  <aside className="fixed inset-y-0 left-0 z-40 hidden w-[248px] flex-col border-r border-white/[.065] bg-[#0b0e0c]/95 backdrop-blur-xl lg:flex">
+    <div className="flex h-[76px] items-center px-5"><Link href="/dashboard" className="flex items-center gap-3"><BrandMark/><div><div className="text-[15px] font-semibold tracking-[-.02em] text-white">RecoverAI</div><div className="text-[9px] tracking-[.08em] text-zinc-600">REVENUE INTELLIGENCE</div></div></Link></div>
+    <nav className="flex-1 overflow-y-auto px-3 pb-4">{sections.map(section=><div key={section.label} className="mb-5"><div className="mb-1.5 px-3 text-[9px] font-semibold uppercase tracking-[.16em] text-zinc-600">{section.label}</div><div className="space-y-0.5">{section.items.map(item=>{const active=pathname===item.href||(item.href!=="/dashboard"&&pathname.startsWith(item.href));const Icon=item.icon;return <Link key={item.href} href={item.href} className={`group flex h-9 items-center gap-3 rounded-lg px-3 text-[12px] font-medium transition-all ${active?"bg-emerald-400/[.09] text-emerald-300":"text-zinc-500 hover:bg-white/[.035] hover:text-zinc-200"}`}><Icon size={15} strokeWidth={active?2.2:1.8}/><span>{item.name}</span>{active&&<span className="ml-auto h-1 w-1 rounded-full bg-emerald-400 shadow-[0_0_8px_#64e6a6]"/>}</Link>})}</div></div>)}</nav>
+    <div className="px-3 pb-4"><div className="mb-2 rounded-xl border border-emerald-400/[.1] bg-emerald-400/[.035] p-3"><div className="flex items-center justify-between"><div className="flex items-center gap-2 text-[11px] font-medium text-zinc-300"><Activity size={13} className="text-emerald-400"/> System health</div><span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"/></div><div className="mt-2 flex items-center justify-between text-[10px] text-zinc-600"><span>API & workers</span><span className="text-emerald-400/80">Operational</span></div></div><button className="flex w-full items-center gap-3 rounded-xl px-2 py-2 text-left hover:bg-white/[.03]"><span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-emerald-300 to-teal-600 text-[10px] font-bold text-emerald-950">RA</span><span className="min-w-0 flex-1"><span className="block truncate text-[11px] font-medium text-zinc-300">RecoverAI Demo</span><span className="block text-[9px] text-zinc-600">Mock environment</span></span><ChevronDown size={13} className="text-zinc-600"/></button></div>
+  </aside></>}
 
-  return (
-    <aside className="w-60 min-h-screen border-r border-zinc-800 p-5 fixed bg-zinc-950/80 backdrop-blur select-none">
-      <div className="flex items-center gap-2 mb-1">
-        <div className="w-7 h-7 rounded-lg bg-emerald-600 flex items-center justify-center font-bold text-white text-sm shadow-md shadow-emerald-950">
-          R
-        </div>
-        <div className="text-xl font-bold text-white tracking-tight">RecoverAI</div>
-      </div>
-      <div className="text-[11px] text-zinc-500 mb-6 pl-9">Revenue Recovery OS</div>
-
-      <nav className="space-y-1">
-        {items.map((item) => {
-          const isActive =
-            pathname === item.href || (item.href !== "/dashboard" && pathname.startsWith(item.href));
-
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition ${
-                isActive
-                  ? "bg-emerald-600/15 text-emerald-400 border border-emerald-800/40"
-                  : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900"
-              }`}
-            >
-              <span className="text-sm">{item.icon}</span>
-              <span>{item.name}</span>
-            </Link>
-          );
-        })}
-      </nav>
-
-      <div className="absolute bottom-5 left-5 right-5 p-3 rounded-xl border border-zinc-800 bg-zinc-900/60 text-[11px]">
-        <div className="flex items-center justify-between">
-          <span className="text-zinc-400">Environment</span>
-          <span className="badge text-[10px] bg-zinc-800 text-zinc-300">Mock Mode</span>
-        </div>
-        <div className="mt-2 text-zinc-500 text-[10px]">
-          Demo Key: <span className="font-mono text-zinc-400">recoverai-demo-key</span>
-        </div>
-      </div>
-    </aside>
-  );
-}
+function BrandMark(){return <div className="relative grid h-9 w-9 place-items-center overflow-hidden rounded-xl border border-emerald-300/20 bg-gradient-to-br from-emerald-300 to-emerald-600 text-emerald-950 shadow-[0_0_24px_rgba(52,211,153,.12)]"><Zap size={17} fill="currentColor" strokeWidth={2.5}/><span className="absolute inset-x-1 bottom-0 h-px bg-white/50"/></div>}

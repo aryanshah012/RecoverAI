@@ -17,7 +17,7 @@ def fallback_probability(payment:Payment):
     return max(.05,min(p,.95))
 
 def run_recovery(db:Session, payment:Payment, recovery_probability:float|None=None):
-    duplicate=db.query(RecoveryCase).filter(RecoveryCase.payment_id==payment.payment_id,RecoveryCase.status.in_(["created","approved","executing","waiting_human_review"])) .first()
+    duplicate=db.query(RecoveryCase).filter(RecoveryCase.merchant_id==payment.merchant_id,RecoveryCase.payment_id==payment.payment_id,RecoveryCase.status.in_(["created","approved","executing","paused","waiting_human_review"])).first()
     if duplicate: return duplicate
     memory=get_or_create_memory(db,payment.customer_id,payment.merchant_id)
     diag=diagnose(payment.failure_reason); p=recovery_probability if recovery_probability is not None else fallback_probability(payment)

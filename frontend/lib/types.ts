@@ -1,0 +1,11 @@
+export type PaymentStatus="failed"|"captured"|"pending";
+export interface Payment { id:number; merchant_id:string; payment_id:string; customer_id:string; amount_paise:number; currency:string; payment_method?:string; bank?:string; status:PaymentStatus|string; failure_reason?:string; attempt_number:number; created_at:string; }
+export interface RecoveryCase { id:number; merchant_id:string; payment_id?:string; source_type:string; source_id?:string; customer_id:string; amount_paise:number; status:string; diagnosis?:string; recovery_probability?:number; confidence?:number; selected_action?:string; expected_recovery_paise:number; intervention_cost_paise:number; expected_net_recovery_paise:number; recovered_amount_paise:number; priority?:string; policy_status?:string; policy_reason?:string; external_url?:string; provider?:string; execution_mode?:string; recommended_time?:string; created_at:string; updated_at:string; }
+export interface RecoveryAction { id:number; recovery_case_id:number; action_type:string; status:string; external_url?:string; provider?:string; execution_mode?:string; created_at:string; completed_at?:string; }
+export interface AuditEvent { id:number; recovery_case_id?:number; event_type:string; message:string; details:Record<string,unknown>; created_at:string; }
+export interface HumanReview { id:number; recovery_case_id:number; status:string; reason?:string; reviewer_note?:string; created_at:string; decided_at?:string; }
+export interface RecoveryCaseDetail { case:RecoveryCase; payment:Payment|null; actions:RecoveryAction[]; events:AuditEvent[]; review:HumanReview|null; }
+export interface DashboardData { period:{days:number;start:string;end:string}; total_payments:number; failed_payments:number; recovered_payments:number; revenue_at_risk_paise:number; recovered_revenue_paise:number; recovery_rate:number; active_recoveries:number; trends:{revenue_at_risk_pct:number;recovered_revenue_pct:number;recovery_rate_pct:number}; }
+export interface Opportunity { source_type:string; source_id:string; customer_id:string; amount_paise:number; recovery_probability:number; intervention_cost_paise:number; expected_net_recovery_paise:number; recommended_action:string; }
+
+export class ApiError extends Error { constructor(public status:number,message:string,public requestId?:string){super(message);this.name="ApiError";} }

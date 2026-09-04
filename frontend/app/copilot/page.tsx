@@ -113,6 +113,17 @@ export default function CopilotPage() {
             </span>
           </div>
 
+          {result.retrieval && (
+            <div className="flex flex-wrap gap-2 text-[10px]">
+              <span className={`badge ${result.grounding?.grounded ? "bg-emerald-950/60 text-emerald-300 border-emerald-800" : "bg-amber-950/60 text-amber-300 border-amber-800"}`}>
+                {result.grounding?.grounded ? "Grounded response" : "No grounded answer"}
+              </span>
+              <span className="badge bg-zinc-950 text-zinc-400 border-zinc-800">
+                Retrieval: {result.retrieval.status} · {result.retrieval.item_count} evidence item{result.retrieval.item_count === 1 ? "" : "s"}
+              </span>
+            </div>
+          )}
+
           <div className="text-lg font-medium text-white leading-relaxed">
             {result.answer}
           </div>
