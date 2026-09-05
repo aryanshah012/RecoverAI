@@ -55,8 +55,8 @@ export default function RecoveryTrendChart({ data }: { data: TrendData[] }) {
               <stop offset="95%" stopColor="#ef4444" stopOpacity={0.0} />
             </linearGradient>
             <linearGradient id="colorRecovered" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#83a99b" stopOpacity={0.3} />
-              <stop offset="95%" stopColor="#83a99b" stopOpacity={0.0} />
+              <stop offset="5%" stopColor="#60a5fa" stopOpacity={0.3} />
+              <stop offset="95%" stopColor="#60a5fa" stopOpacity={0.0} />
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke="#272a2f" vertical={false} />
@@ -79,7 +79,7 @@ export default function RecoveryTrendChart({ data }: { data: TrendData[] }) {
           <Area
             type="monotone"
             dataKey="Recovered"
-            stroke="#83a99b"
+            stroke="#60a5fa"
             strokeWidth={2.5}
             fillOpacity={1}
             fill="url(#colorRecovered)"
