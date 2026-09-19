@@ -9,7 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@types/node": "22.10.2",
+    "@types/node": "26.6.1",
     "@types/react": "19.0.3",
     "@types/react-dom": "19.0.2",
     "lucide-react": "0.468.0",
