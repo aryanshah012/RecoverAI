@@ -1,5 +1,7 @@
 # RecoverAI — AI Revenue Recovery OS
 
+[![CI](https://github.com/aryanshah012/RecoverAI/actions/workflows/ci.yml/badge.svg)](https://github.com/aryanshah012/RecoverAI/actions/workflows/ci.yml)
+
 RecoverAI is an **AI-powered revenue recovery platform** for merchants. It detects revenue at risk across failed payments, abandoned checkouts, and unsuccessful subscription renewals, predicts recoverability, recommends bounded actions, applies deterministic safety policies, and measures recovered revenue.
 
 > **Demo scope:** synthetic datasets and Razorpay Test/Mock mode. Simulation results are not presented as real merchant performance.
@@ -114,3 +116,10 @@ Most recovery systems treat every failure similarly. RecoverAI combines **predic
 
 ---
 Built as a practical AI/ML + fintech project focused on **safe automation, measurable outcomes, and production-style engineering**.
+
+## Engineering Standards
+
+- Automated CI validates changes on pushes and pull requests.
+- Dependabot monitors Python and/or JavaScript dependencies where applicable.
+- [CONTRIBUTING.md](CONTRIBUTING.md) documents the development workflow and review expectations.
+- [SECURITY.md](SECURITY.md) documents responsible vulnerability reporting and security principles.
